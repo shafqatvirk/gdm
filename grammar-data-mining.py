@@ -36,32 +36,34 @@ def annotate_doc(doc,feature):
     
     doc_annotations = []
     for sent in sents:
+        if 'follow' in sent or 'precede' in sent or 'order' in sent or 'put' in sent or 'place' in sent:
         #print(sent)
-        try:
-            annotations = parser.server(PARSER, sent,frames_dict,vec,LReg,vec_classifier,LReg_classifier)
-            #print(annotations)
-            if annotations != [] and annotations != None :
-                for (f,l,fes) in annotations:
-                    if f == 'SEQUENCE':    
-                        if feature == "87A Order of Adjective and Noun":
-                            order = feature_87a(fes)
-                        elif feature == "81A Order of Subject, Object and Verb":
-                            order = feature_81a(fes)
-                        elif feature == "86A Order of Genitive and Noun":
-                            order = feature_86a(fes)
-                        elif feature == "89A Order of Numeral and Noun":
-                            order = feature_89a(fes)
-                        elif feature == "90A Order of Relative Clause and Noun":
-                            order = feature_90a(fes)
-                        elif feature == "82A Order of Subject and Verb":
-                            order = feature_82a(fes)
-                        
-            if order != None:
-                #print(file_name)
-                return order
-        except:
-            #print('exception')
-            continue
+            try:
+                annotations = parser.server(PARSER, sent,frames_dict,vec,LReg,vec_classifier,LReg_classifier)
+                #print(annotations)
+                if annotations != [] and annotations != None :
+                    for (f,l,fes) in annotations:
+                        if f == 'SEQUENCE':    
+                            if feature == "87A Order of Adjective and Noun":
+                                order = feature_87a(fes)
+                            elif feature == "81A Order of Subject, Object and Verb":
+                                order = feature_81a(fes)
+                            elif feature == "86A Order of Genitive and Noun":
+                                order = feature_86a(fes)
+                            elif feature == "89A Order of Numeral and Noun":
+                                order = feature_89a(fes)
+                            elif feature == "90A Order of Relative Clause and Noun":
+                                order = feature_90a(fes)
+                            elif feature == "82A Order of Subject and Verb":
+                                order = feature_82a(fes)
+                            
+                if order != None:
+                    #print(file_name)
+                    return order
+            except:
+                #print('exception')
+                continue
+    return None
         
 def feature_87a(fes):
     N_entity_1,A_entity_1,N_entity_2,A_entity_2 = False, False, False, False
@@ -100,23 +102,23 @@ def feature_87a(fes):
                                 if 'normally' in frequency or 'usually' in frequency or 'often' in frequency or 'sometimes' in frequency or 'mostly' in frequency:
                                     order = 'Both'
                                 else:
-                                    order = 'NA'
+                                    order = 'Noun-Adjective'
                             elif follow:
                                 if 'normally' in frequency or 'usually' in frequency or 'often' in frequency or 'sometimes' in frequency or 'mostly' in frequency:
                                     order = 'Both'
                                 else:
-                                    order = 'AN'
+                                    order = 'Adjective-Noun'
     elif N_entity_2 and A_entity_1:
                             if precede:
                                 if 'normally' in frequency or 'usually' in frequency or 'often' in frequency or 'sometimes' in frequency or 'mostly' in frequency:
                                     order = 'Both'
                                 else:
-                                    order = 'AN'
+                                    order = 'Adjective-Noun'
                             elif follow:
                                 if 'normally' in frequency or 'usually' in frequency or 'often' in frequency or 'sometimes' in frequency or 'mostly' in frequency:
                                     order = 'Both'
                                 else:
-                                    order = 'NA'
+                                    order = 'Noun-Adjective'
                         #print(sent)
     return order
                         #if order != 'Empty':
@@ -166,23 +168,23 @@ def feature_86a(fes):
                                 if 'normally' in frequency or 'usually' in frequency or 'often' in frequency or 'sometimes' in frequency or 'mostly' in frequency:
                                     order = 'Both'
                                 else:
-                                    order = 'GN'
+                                    order = 'Genitive-Noun'
                             elif follow:
                                 if 'normally' in frequency or 'usually' in frequency or 'often' in frequency or 'sometimes' in frequency or 'mostly' in frequency:
                                     order = 'Both'
                                 else:
-                                    order = 'NG'
+                                    order = 'Noun-Genitive'
     elif G_entity_2 and N_entity_1:
                             if precede:
                                 if 'normally' in frequency or 'usually' in frequency or 'often' in frequency or 'sometimes' in frequency or 'mostly' in frequency:
                                     order = 'Both'
                                 else:
-                                    order = 'NG'
+                                    order = 'Noun-Genitive'
                             elif follow:
                                 if 'normally' in frequency or 'usually' in frequency or 'often' in frequency or 'sometimes' in frequency or 'mostly' in frequency:
                                     order = 'Both'
                                 else:
-                                    order = 'GN'
+                                    order = 'Genitive-Noun'
                         #print(sent)
     return order       
 def feature_89a(fes):
@@ -221,23 +223,23 @@ def feature_89a(fes):
                                 if 'normally' in frequency or 'usually' in frequency or 'often' in frequency or 'sometimes' in frequency or 'mostly' in frequency:
                                     order = 'Both'
                                 else:
-                                    order = 'NNum'
+                                    order = 'Noun-Numeral'
                             elif follow:
                                 if 'normally' in frequency or 'usually' in frequency or 'often' in frequency or 'sometimes' in frequency or 'mostly' in frequency:
                                     order = 'Both'
                                 else:
-                                    order = 'NumN'
+                                    order = 'Numeral-Noun'
     elif N_entity_2 and Num_entity_1:
                             if precede:
                                 if 'normally' in frequency or 'usually' in frequency or 'often' in frequency or 'sometimes' in frequency or 'mostly' in frequency:
                                     order = 'Both'
                                 else:
-                                    order = 'NumN'
+                                    order = 'Numeral-Noun'
                             elif follow:
                                 if 'normally' in frequency or 'usually' in frequency or 'often' in frequency or 'sometimes' in frequency or 'mostly' in frequency:
                                     order = 'Both'
                                 else:
-                                    order = 'NNum'
+                                    order = 'Noun-Numeral'
                         #print(sent)
     return order
 
@@ -277,23 +279,23 @@ def feature_90a(fes):
                                 if 'normally' in frequency or 'usually' in frequency or 'often' in frequency or 'sometimes' in frequency or 'mostly' in frequency:
                                     order = 'Both'
                                 else:
-                                    order = 'NR'
+                                    order = 'Noun-Relative Clause'
                             elif follow:
                                 if 'normally' in frequency or 'usually' in frequency or 'often' in frequency or 'sometimes' in frequency or 'mostly' in frequency:
                                     order = 'Both'
                                 else:
-                                    order = 'RN'
+                                    order = 'Relative Clause-Noun'
     elif RC_entity_1 and N_entity_2:
                             if precede:
                                 if 'normally' in frequency or 'usually' in frequency or 'often' in frequency or 'sometimes' in frequency or 'mostly' in frequency:
                                     order = 'Both'
                                 else:
-                                    order = 'RN'
+                                    order = 'Relative Clause-Noun'
                             elif follow:
                                 if 'normally' in frequency or 'usually' in frequency or 'often' in frequency or 'sometimes' in frequency or 'mostly' in frequency:
                                     order = 'Both'
                                 else:
-                                    order = 'NR'
+                                    order = 'Noun-Relative Clause'
                         #print(sent)
     return order
 
