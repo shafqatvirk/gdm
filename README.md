@@ -1,0 +1,2 @@
+The system requires downloading 'stanford-corenlp-full-2018-01-31' and 'stanford-parser-full-2014-01-04' from {https://stanfordnlp.github.io/CoreNLP/history.html}, and {https://nlp.stanford.edu/software/lex-parser.shtml#Download} respectively. The zipped downloads need to be unzipped and the resulting directories should be placed in the same directory where the other files of the shared task system are placed. 
+
